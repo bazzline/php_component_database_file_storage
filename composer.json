@@ -1,0 +1,30 @@
+{
+    "description": "local file database",
+    "keywords": ["php", "local", "file", "database"],
+    "license": "LGPLv3",
+    "name": "stevleibelt/php_component_locator_database_file_storage",
+    "type": "library",
+    "authors": [
+        {
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.et",
+            "name": "Stev Leibelt",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "mikey179/vfsstream": "1.5.0",
+        "mockery/mockery": "0.9.3",
+        "phpunit/phpunit": "4.5.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Leibelt\\Stev\\Database\\FileStorage": "source/",
+            "Test\\Leibelt\\Stev\\Database\\FileStorage": "test/"
+        }
+    }
+}
