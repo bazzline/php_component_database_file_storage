@@ -15,3 +15,7 @@ $storage->readList(array $uniqueIdentifier = null, $data) : $data|array;
 $storage->updateList(array $uniqueIdentifier, $data) : true|false;
 $storage->deleteList(array $uniqueIdentifier) : true|false;
 ```
+
+## Thoughts
+
+* if write (create/read) action is triggered, create a *.lock file to prevent multiple writings
