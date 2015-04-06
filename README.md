@@ -19,3 +19,6 @@ $storage->deleteList(array $uniqueIdentifier) : true|false;
 ## Thoughts
 
 * if write (create/read) action is triggered, create a *.lock file to prevent multiple writings
+* implement caching via proxy
+    * simple two files storages injected
+    * if number of changed itemes reaches limit, cache is written into real storage
