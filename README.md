@@ -23,3 +23,6 @@ $storage->deleteList(array $uniqueIdentifier) : true|false;
     * simple two files storages injected
     * if number of changed itemes reaches limit, cache is written into real storage
 * use a uuid generator for unique keys
+    * use a [temporary file](http://php.net/manual/en/function.tmpfile.php)
+    * beeing even more pro, use [php://temp](http://php.net/manual/en/wrappers.php.php)
+        * implement some kind of "intelligent" cache that counts the average size of an entry to determine the maximum number of entries before flushing the cache
