@@ -16,10 +16,11 @@ interface FileStorageInterface
     public function create($data);
 
     /**
-     * @param mixed $uniqueIdentifier
+     * @param null|mixed $uniqueIdentifier
+     * @param null|mixed $data
      * @return null|mixed - nothing or data
      */
-    public function read($uniqueIdentifier);
+    public function read($uniqueIdentifier = null, $data = null);
 
     /**
      * @param mixed $uniqueIdentifier
@@ -35,22 +36,17 @@ interface FileStorageInterface
     public function delete($uniqueIdentifier);
 
     /**
-     * @param mixed $data
-     * @return null|mixed - nothing or data
-     */
-    public function search($data);
-
-    /**
      * @param array $dataList
      * @return array
      */
     public function createList(array $dataList);
 
     /**
-     * @param array $uniqueIdentifiers
+     * @param null|array $uniqueIdentifiers
+     * @param null|mixed $data
      * @return null|mixed - nothing or array of data
      */
-    public function readList(array $uniqueIdentifiers);
+    public function readList(array $uniqueIdentifiers = null, $data);
 
     /**
      * @param array $uniqueIdentifierToDataList
@@ -59,14 +55,8 @@ interface FileStorageInterface
     public function updateList(array $uniqueIdentifierToDataList);
 
     /**
-     * @param array $uniqueIdentifierToDataList
+     * @param array $uniqueIdentifiers
      * @return boolean
      */
-    public function deleteList(array $uniqueIdentifierToDataList);
-
-    /**
-     * @param mixed $data
-     * @return null|array - nothing or collection of data
-     */
-    public function searchList($data);
+    public function deleteList(array $uniqueIdentifiers);
 }

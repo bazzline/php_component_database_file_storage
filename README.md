@@ -1,19 +1,21 @@
 # Database File Storage for PHP
 
-## Basic Interface (Draft)
+## [crud](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) [storage interface](https://github.com/stevleibelt/php_component_database_file_storage/blob/master/source/Leibelt/Stev/Database/FileStorage/FileStorageInterface.php)
 
 ```php
-//single object crud
-$storage->create($data) : $uniqueIdentifier;
-$storage->read($uniqueIdentifier = null, $data) : $data|null;
-$storage->update($uniqueIdentifier, $data) : true|false;
-$storage->delete($uniqueIdentifier) : true|false;
+//separates single crud from list crud operations
 
-//collection crud
-$storage->createList($data) : array($uniqueIdentifier);
-$storage->readList(array $uniqueIdentifier = null, $data) : $data|array;
-$storage->updateList(array $uniqueIdentifier, $data) : true|false;
-$storage->deleteList(array $uniqueIdentifier) : true|false;
+//single object crud operations
+public function create($data) : $uniqueIdentifier;
+public function read($uniqueIdentifier = null, $data = null) : null|$data;
+public function update($uniqueIdentifier, $data) : true|false;
+public function delete($uniqueIdentifier) : true|false;
+
+//collection crud operations
+public function createList(array $dataList) : array;
+public function readList(array $uniqueIdentifier = null, $data = null) : null|array;
+public function updateList(array $uniqueIdentifierToDataList) : true|false;
+public function deleteList(array $uniqueIdentifiers) : true|false;
 ```
 
 ## Thoughts
