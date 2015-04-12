@@ -6,7 +6,6 @@
 
 namespace Leibelt\Stev\Database\FileStorage;
 
-
 interface FileStorageInterface
 {
     /**

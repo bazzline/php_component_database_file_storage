@@ -17,6 +17,7 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
+        "kylecannon/easycsv": "dev-master",
         "mikey179/vfsstream": "1.5.0",
         "mockery/mockery": "0.9.4",
         "phpunit/phpunit": "4.6.4",

@@ -18,9 +18,13 @@ public function updateList(array $uniqueIdentifierToDataList) : true|false;
 public function deleteList(array $uniqueIdentifiers) : true|false;
 ```
 
-## Thoughts
+## Future Improvements
 
+* take a look to [bigdump](https://github.com/wires/bigdump)
+* take a look to [reactphp/filesystem](https://github.com/reactphp/filesystem)
+* take a look to [file wrapper](https://php.net/manual/en/wrappers.file.php)
 * if write (create/read) action is triggered, create a *.lock file to prevent multiple writings
+    * or usd [flock](https://php.net/manual/en/function.flock.php)
 * implement caching via proxy
     * simple two files storages injected
     * if number of changed itemes reaches limit, cache is written into real storage
