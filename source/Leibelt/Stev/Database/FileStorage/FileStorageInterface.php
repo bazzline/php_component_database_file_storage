@@ -9,53 +9,37 @@ namespace Leibelt\Stev\Database\FileStorage;
 interface FileStorageInterface
 {
     /**
-     * @param $data
+     * @param mixed $data
      * @return mixed - unique identifier
      */
     public function create($data);
 
     /**
-     * @param null|mixed $uniqueIdentifier
-     * @param null|mixed $data
      * @return null|mixed - nothing or data
      */
-    public function read($uniqueIdentifier = null, $data = null);
+    public function read();
 
     /**
-     * @param mixed $uniqueIdentifier
      * @param mixed $data
      * @return boolean
      */
-    public function update($uniqueIdentifier, $data);
+    public function update($data);
 
     /**
-     * @param mixed $uniqueIdentifier
      * @return boolean
      */
-    public function delete($uniqueIdentifier);
+    public function delete();
 
     /**
-     * @param array $dataList
-     * @return array
+     * @param mixed $key
+     * @param mixed $value
+     * @return $this
      */
-    public function createList(array $dataList);
+    public function filterBy($key, $value);
 
     /**
-     * @param null|array $uniqueIdentifiers
-     * @param null|mixed $data
-     * @return null|mixed - nothing or array of data
+     * @param mixed $id
+     * @return $this
      */
-    public function readList(array $uniqueIdentifiers = null, $data);
-
-    /**
-     * @param array $uniqueIdentifierToDataList
-     * @return boolean
-     */
-    public function updateList(array $uniqueIdentifierToDataList);
-
-    /**
-     * @param array $uniqueIdentifiers
-     * @return boolean
-     */
-    public function deleteList(array $uniqueIdentifiers);
+    public function filterById($id);
 }

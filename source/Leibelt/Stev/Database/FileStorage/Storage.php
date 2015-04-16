@@ -11,6 +11,12 @@ use EasyCSV\Writer;
 
 class Storage implements FileStorageInterface
 {
+    /** @var array */
+    private $filters;
+
+    /** @var null|mixed */
+    private $filterById;
+
     /** @var IdGeneratorInterface */
     private $generator;
 
@@ -35,12 +41,13 @@ class Storage implements FileStorageInterface
         $this->reader       = $reader;
         $this->writer       = $writer;
 
+        $this->resetFilters();
         $this->createPathIfNotAvailable($this->path);
         $this->validatePath($this->path);
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      * @return mixed - unique identifier
      */
     public function create($data)
@@ -49,102 +56,105 @@ class Storage implements FileStorageInterface
         $line   = array($id, json_encode($data));
 
         $this->writer->writeRow($line);
+        $this->resetFilters();
 
         return $id;
     }
 
+
+
     /**
-     * @param null|mixed $uniqueIdentifier
-     * @param null|mixed $data
      * @return null|mixed - nothing or data
-     * @todo implement support/usage of $data
+     * @todo
      */
-    public function read($uniqueIdentifier = null, $data = null)
+    public function read()
     {
         $data = null;
 
-        while ($line = $this->reader->getRow()) {
-            if ($line[0] === $uniqueIdentifier) {
-                $data = json_decode($line[1]);
-                break;
+        if (!$this->hasFilterById()
+            && !$this->hasFilters()) {
+            $data = $this->reader->getAll();
+            //@todo implement handling of data
+            //$data = json_decode($line[1]);
+        } else {
+            while ($line = $this->reader->getRow()) {
+                if ($this->hasFilterById()) {
+                    if ($line[0] === $this->filterById) {
+                        $data = json_decode($line[1]);
+                        break;
+                    }
+                }
+                if ($this->hasFilters()) {
+                    $entry = json_decode($line[1]);
+
+                    foreach ($this->filters as $key => $filter) {
+                        //@todo
+                    }
+                }
             }
         }
+        $this->resetFilters();
 
         return $data;
     }
 
+
+
     /**
-     * @param mixed $uniqueIdentifier
      * @param mixed $data
+     *
      * @return boolean
-     * @todo
      */
-    public function update($uniqueIdentifier, $data)
+    public function update($data)
     {
-        $couldBeUpdated = false;
-
-        //read and write into separate file
-        $fileData = $this->reader->getAll();
-
-        //@todo implement "empty file"
-        //$this->writer->
-        foreach ($fileData as $line) {
-
-        }
-        while ($line = $this->reader->getRow()) {
-            if ($line[0] === $uniqueIdentifier) {
-                $couldBeUpdated = json_decode($line[1]);
-                break;
-            }
-        }
-
-        return $couldBeUpdated;
+        // TODO: Implement update() method.
+        //@reuse filter logic read read
+        //@todo read and write into different files
+        //@todo replace old file with new file
+        $this->resetFilters();
     }
 
+
+
     /**
-     * @param mixed $uniqueIdentifier
      * @return boolean
      */
-    public function delete($uniqueIdentifier)
+    public function delete()
     {
         // TODO: Implement delete() method.
+        //@reuse filter logic read read
+        //@todo read and write into different files
+        //@todo replace old file with new file
+        $this->resetFilters();
     }
 
-    /**
-     * @param array $dataList
-     * @return array
-     */
-    public function createList(array $dataList)
-    {
-        // TODO: Implement createList() method.
-    }
+
 
     /**
-     * @param null|array $uniqueIdentifiers
-     * @param null|mixed $data
-     * @return null|mixed - nothing or array of data
+     * @param mixed $key
+     * @param mixed $value
+     *
+     * @return $this
      */
-    public function readList(array $uniqueIdentifiers = null, $data)
+    public function filterBy($key, $value)
     {
-        // TODO: Implement readList() method.
+        $this->filters[$key] = $value;
+
+        return $this;
     }
 
-    /**
-     * @param array $uniqueIdentifierToDataList
-     * @return boolean
-     */
-    public function updateList(array $uniqueIdentifierToDataList)
-    {
-        // TODO: Implement updateList() method.
-    }
+
 
     /**
-     * @param array $uniqueIdentifiers
-     * @return boolean
+     * @param mixed $id
+     *
+     * @return $this
      */
-    public function deleteList(array $uniqueIdentifiers)
+    public function filterById($id)
     {
-        // TODO: Implement deleteList() method.
+        $this->filterById = $id;
+
+        return $this;
     }
 
     /**
@@ -162,6 +172,28 @@ class Storage implements FileStorageInterface
                 throw new InvalidArgumentException($message);
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasFilters()
+    {
+        return (!empty($this->filters));
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasFilterById()
+    {
+        return (!is_null($this->filterById));
+    }
+
+    private function resetFilters()
+    {
+        $this->filters      = array();
+        $this->filterById   = null;
     }
 
     /**
