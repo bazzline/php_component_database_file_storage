@@ -15,9 +15,14 @@ interface FileStorageInterface
     public function create($data);
 
     /**
-     * @return null|mixed - nothing or data
+     * @return array
      */
     public function read();
+
+    /**
+     * @return null|mixed - nothing or data
+     */
+    public function readOne();
 
     /**
      * @param mixed $data

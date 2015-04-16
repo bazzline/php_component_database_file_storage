@@ -64,18 +64,18 @@ class Storage implements FileStorageInterface
 
 
     /**
-     * @return null|mixed - nothing or data
+     * @return array
      * @todo
      */
     public function read()
     {
-        $data = null;
+        $collection = array();
 
         if (!$this->hasFilterById()
             && !$this->hasFilters()) {
-            $data = $this->reader->getAll();
-            //@todo implement handling of data
-            //$data = json_decode($line[1]);
+            while ($line = $this->reader->getRow()) {
+                $collection[$line[0]] = json_decode($line[1]);
+            }
         } else {
             while ($line = $this->reader->getRow()) {
                 if ($this->hasFilterById()) {
@@ -95,14 +95,24 @@ class Storage implements FileStorageInterface
         }
         $this->resetFilters();
 
-        return $data;
+        return $collection;
     }
 
 
 
     /**
+     * @return null|mixed - nothing or data
+     */
+    public function readOne()
+    {
+        //@reuse filter logic read read
+        //@todo read and write into different files
+        //@todo replace old file with new file
+        $this->resetFilters();
+    }
+
+    /**
      * @param mixed $data
-     *
      * @return boolean
      */
     public function update($data)
@@ -113,8 +123,6 @@ class Storage implements FileStorageInterface
         //@todo replace old file with new file
         $this->resetFilters();
     }
-
-
 
     /**
      * @return boolean
@@ -128,12 +136,9 @@ class Storage implements FileStorageInterface
         $this->resetFilters();
     }
 
-
-
     /**
      * @param mixed $key
      * @param mixed $value
-     *
      * @return $this
      */
     public function filterBy($key, $value)
@@ -143,11 +148,8 @@ class Storage implements FileStorageInterface
         return $this;
     }
 
-
-
     /**
      * @param mixed $id
-     *
      * @return $this
      */
     public function filterById($id)
