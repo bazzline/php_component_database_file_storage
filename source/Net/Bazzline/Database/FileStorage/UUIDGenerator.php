@@ -4,7 +4,7 @@
  * @since 2015-04-12 
  */
 
-namespace Leibelt\Stev\Database\FileStorage;
+namespace Net\Bazzline\Database\FileStorage;
 
 use Rhumsaa\Uuid\Uuid;
 
@@ -15,6 +15,6 @@ class UUIDGenerator implements IdGeneratorInterface
      */
     public function generate()
     {
-        return Uuid::uuid5(UUID::NAMESPACE_DNS, 'leibelt.de');
+        return Uuid::uuid4()->toString();
     }
 }

@@ -2,7 +2,7 @@
     "description": "local file database",
     "keywords": ["php", "local", "file", "database"],
     "license": "LGPLv3",
-    "name": "stevleibelt/php_component_locator_database_file_storage",
+    "name": "net_bazzline/php_component_locator_database_file_storage",
     "type": "library",
     "authors": [
         {
@@ -17,16 +17,16 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "kylecannon/easycsv": "dev-master",
         "mikey179/vfsstream": "1.5.0",
         "mockery/mockery": "0.9.4",
+        "net_bazzline/php_component_csv": "1.0.0",
         "phpunit/phpunit": "4.6.4",
         "rhumsaa/uuid": "2.8.0"
     },
     "autoload": {
         "psr-0": {
-            "Leibelt\\Stev\\Database\\FileStorage": "source/",
-            "Test\\Leibelt\\Stev\\Database\\FileStorage": "test/"
+            "Net\\Bazzline\\Database\\FileStorage": "source/",
+            "Test\\Net\\Bazzline\\Database\\FileStorage": "test/"
         }
     }
 }

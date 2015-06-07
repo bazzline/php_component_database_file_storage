@@ -4,15 +4,15 @@
  * @since 2015-04-12 
  */
 
-namespace Leibelt\Stev\Database\FileStorage;
+namespace Net\Bazzline\Database\FileStorage;
 
 interface FileStorageInterface
 {
     /**
-     * @param mixed $data
-     * @return mixed - unique identifier
+     * @param array $data
+     * @return string - unique identifier
      */
-    public function create($data);
+    public function create(array $data);
 
     /**
      * @return array
@@ -25,10 +25,10 @@ interface FileStorageInterface
     public function readOne();
 
     /**
-     * @param mixed $data
+     * @param array $data
      * @return boolean
      */
-    public function update($data);
+    public function update(array $data);
 
     /**
      * @return boolean
