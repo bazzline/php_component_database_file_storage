@@ -14,9 +14,6 @@ $storage->injectPath($path);
 
 $collection = $storage->read();
 
-//echo var_export($collection, true) . PHP_EOL;
-/**
 foreach ($collection as $id => $data) {
     echo $id . ': ' . var_export($data, true) . PHP_EOL;
 }
-*/

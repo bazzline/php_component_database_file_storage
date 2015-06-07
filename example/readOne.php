@@ -13,7 +13,9 @@ $path       = __DIR__ . '/storage';
 $storage->injectPath($path);
 
 $line   = $storage->readOne();
-$id     = key($line);
-$data   = current($line);
+if (!is_null($line)) {
+    $id     = key($line);
+    $data   = current($line);
 
-echo $id . ': ' . var_export($data, true) . PHP_EOL;
+    echo $id . ': ' . var_export($data, true) . PHP_EOL;
+}

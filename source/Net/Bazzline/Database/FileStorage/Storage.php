@@ -178,10 +178,12 @@ class Storage implements FileStorageInterface
         //@todo replace old file with new file
         $reader     = $this->reader;
         $line       = $reader->readOne();
-        $collection = array();
         if (is_array($line)
             && count($line) === 2) {
+            $collection = array();
             $collection[$line[0]] = (array) json_decode($line[1]);
+        } else {
+            $collection = null;
         }
 
         $this->resetFilters();
