@@ -51,9 +51,12 @@ public function filterById($id);
 public function limitBy($count, $offset = null);
 ```
 
+# Benefits
+
+* implemented [locking](https://packagist.org/packages/net_bazzline/component_lock) to prevent multiple reads and writes
+
 ## Future Improvements
 
-* implement locking to prevent having multiple instances working on the same database
 * extend "filterBy"
     * $key and $value are optional to filter by key or by value
 * take a look to [bigdump](https://github.com/wires/bigdump)

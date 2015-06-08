@@ -8,6 +8,7 @@ namespace Net\Bazzline\Database\FileStorage;
 
 use Net\Bazzline\Component\Csv\Reader\Reader;
 use Net\Bazzline\Component\Csv\Writer\Writer;
+use Net\Bazzline\Component\Lock\LockInterface;
 
 class Storage implements FileStorageInterface
 {
@@ -32,6 +33,9 @@ class Storage implements FileStorageInterface
     /** @var null|int */
     private $limit;
 
+    /** @var LockInterface */
+    private $lock;
+
     /** @var null|int */
     private $offset;
 
@@ -49,6 +53,13 @@ class Storage implements FileStorageInterface
         $this->resetFilters();
     }
 
+    public function __destruct()
+    {
+        if ($this->lock->isLocked()) {
+            $this->lock->release();
+        }
+    }
+
     /**
      * @param IdGeneratorInterface $generator
      * @return $this
@@ -61,9 +72,27 @@ class Storage implements FileStorageInterface
     }
 
     /**
+     * @param LockInterface $lock
+     * @return $this
+     * @throws RuntimeException
+     */
+    public function injectLock(LockInterface $lock)
+    {
+        if (!is_null($this->path)) {
+            $lock->setName($this->path);
+            $this->validateLock($lock);
+            $lock->acquire();
+        }
+
+        $this->lock = $lock;
+
+        return $this;
+    }
+
+    /**
      * @param string $path
      * @return $this
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|RuntimeException
      */
     public function injectPath($path)
     {
@@ -75,6 +104,15 @@ class Storage implements FileStorageInterface
             touch($this->path);
         }
 
+        if (!is_null($this->lock)) {
+            //it is possible that the user switches the path
+            if ($this->lock->isLocked()) {
+                $this->lock->release();
+            }
+            $this->lock->setName($this->path);
+            $this->validateLock($this->lock);
+            $this->lock->acquire();
+        }
         if (!is_null($this->reader)) {
             $this->reader->setPath($this->path);
         }
@@ -399,6 +437,19 @@ class Storage implements FileStorageInterface
             $message = 'directory "' . $path . '" is not writable';
 
             throw new InvalidArgumentException($message);
+        }
+    }
+
+    /**
+     * @param LockInterface $lock
+     * @throws RuntimeException
+     */
+    private function validateLock(LockInterface $lock)
+    {
+        if ($lock->isLocked()) {
+            $message = 'lock exists for "' . $lock->getName() . '"';
+
+            throw new RuntimeException($message);
         }
     }
 
