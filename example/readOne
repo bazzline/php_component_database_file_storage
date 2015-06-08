@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
@@ -12,12 +13,10 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 
-$data = array(
-    'foo'   => 'bar',
-    'bar'   => 'foo',
-    'baz'   => 'foobar'
-);
+$line   = $storage->readOne();
+if (!is_null($line)) {
+    $id     = key($line);
+    $data   = current($line);
 
-$id = $storage->create($data);
-
-echo 'content "' . json_encode($data) . '" written in "' . $path . '" with id "' . $id . '"' . PHP_EOL;
+    echo $id . ': ' . var_export($data, true) . PHP_EOL;
+}

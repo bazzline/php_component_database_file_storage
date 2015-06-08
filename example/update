@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
@@ -27,12 +28,24 @@ foreach ($collection as $id => $data) {
 if (is_null($filterById)) {
     echo 'no data available in "' . $path . '"' . PHP_EOL;
 } else {
+    $data = array(
+        'tralala'       => 'trululu',
+        'boing boing'   => 'bing bong'
+    );
     echo 'number of entries: ' . $iterator . PHP_EOL;
-    echo 'filterById "' . $filterById . '"' . PHP_EOL;
+    echo 'updating id "' . $filterById . '" with "' . var_export($data, true) . PHP_EOL;
     echo PHP_EOL;
+
     $storage->filterById($id);
-    $collection = $storage->read();
-    foreach ($collection as $id => $data) {
-        echo $id . ': ' . var_export($data, true) . PHP_EOL;
+    if ($storage->update($data)) {
+        echo 'update was successful' . PHP_EOL;
+        echo 'dumping data ...' . PHP_EOL;
+        echo PHP_EOL;
+        $collection = $storage->read();
+        foreach ($collection as $id => $data) {
+            echo $id . ': ' . var_export($data, true) . PHP_EOL;
+        }
+    } else {
+        echo 'update was successful' . PHP_EOL;
     }
 }

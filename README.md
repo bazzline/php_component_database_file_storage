@@ -42,13 +42,21 @@ public function filterBy($key, $value);
  * @return $this
  */
 public function filterById($id);
+
+/**
+ * @param int $count
+ * @param null|int $offset
+ * @return $this
+ */
+public function limitBy($count, $offset = null);
 ```
 
 ## Future Improvements
 
-* implement count
+* implement locking to prevent having multiple instances working on the same database
 * extend "filterBy"
     * $key and $value are optional to filter by key or by value
+* implement limit
 * take a look to [bigdump](https://github.com/wires/bigdump)
 * take a look to [reactphp/filesystem](https://github.com/reactphp/filesystem)
 * take a look to [file wrapper](https://php.net/manual/en/wrappers.file.php)

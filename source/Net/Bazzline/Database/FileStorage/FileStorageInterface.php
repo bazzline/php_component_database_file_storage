@@ -47,4 +47,11 @@ interface FileStorageInterface
      * @return $this
      */
     public function filterById($id);
+
+    /**
+     * @param int $count
+     * @param null|int $offset
+     * @return $this
+     */
+    public function limitBy($count, $offset = null);
 }

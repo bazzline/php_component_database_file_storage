@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
@@ -11,25 +12,22 @@ $storage    = $factory->create();
 $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
-$iterator   = 1;
+$iterator   = 0;
 $collection = $storage->read();
 
 foreach ($collection as $id => $data) {
     ++$iterator;
 }
 
-$filters = array(
-    'bar' => 'foo',
-    'baz' => 'foo',
-    'foobar' => 'barfoo'
-);
+$limit = ($iterator >= 3) ? 2 : (($iterator >= 2) ? 1 : 0);
 
-echo 'Number of entries: ' . $iterator . PHP_EOL;
-
-foreach ($filters as $key => $value) {
-    echo 'filter by key "' . $key . '" with value "' . $value . '"' . PHP_EOL;
+if ($limit === 0) {
+    echo 'not enough data available in "' . $path . '"' . PHP_EOL;
+} else {
+    echo 'Number of entries: ' . $iterator . PHP_EOL;
+    echo 'Limit is set to "' . $limit . '"' . PHP_EOL;
     echo PHP_EOL;
-    $storage->filterBy($key, $value);
+    $storage->limitBy($limit);
     $collection = $storage->read();
     foreach ($collection as $id => $data) {
         echo $id . ': ' . var_export($data, true) . PHP_EOL;

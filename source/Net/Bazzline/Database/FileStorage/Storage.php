@@ -7,6 +7,7 @@
 namespace Net\Bazzline\Database\FileStorage;
 
 use Net\Bazzline\Component\Csv\Reader\Reader;
+use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer\Writer;
 
 class Storage implements FileStorageInterface
@@ -19,6 +20,18 @@ class Storage implements FileStorageInterface
 
     /** @var IdGeneratorInterface */
     private $generator;
+
+    /** @var boolean */
+    private $hasFilterById;
+
+    /** @var boolean */
+    private $hasFilters;
+
+    /** @var null|int */
+    private $limit;
+
+    /** @var null|int */
+    private $offset;
 
     /** @var string */
     private $path;
@@ -128,37 +141,38 @@ class Storage implements FileStorageInterface
         $reader     = $this->reader;
         $reader->rewind();
 
-        if (!$this->hasFilterById()
-            && !$this->hasFilters()) {
-            while ($line = $reader()) {
-                if (is_array($line)
-                    && count($line) === 2) {
+        if ($this->hasOffset()) {
+            $reader = $this->seekReaderToOffset($reader, $this->offset);
+        }
+
+        $iterator   = ($this->hasLimit()) ? $this->limit : -1;
+
+        while ($line = $reader()) {
+            if ($this->isValidLine($line)) {
+                if ($this->hasFilterById) {
+                    if ($line[0] === $this->filterById) {
+                        $collection[$line[0]] = (array) json_decode($line[1]);
+                        break;
+                    }
+                } else if ($this->hasFilters) {
+                    $data = (array) json_decode($line[1]);
+
+                    foreach ($this->filters as $key => $filter) {
+                        if ((isset($data[$key]))
+                            && ($data[$key] === $filter)) {
+                            $collection[$line[0]] = $data;
+                        }
+                    }
+                } else {
                     $collection[$line[0]] = (array) json_decode($line[1]);
                 }
-            }
-        } else {
-            while ($line = $reader()) {
-                if (is_array($line)
-                    && count($line) === 2) {
-                    if ($this->hasFilterById()) {
-                        if ($line[0] === $this->filterById) {
-                            $collection[$line[0]] = (array) json_decode($line[1]);
-                            break;
-                        }
-                    }
-                    if ($this->hasFilters()) {
-                        $data = (array) json_decode($line[1]);
-
-                        foreach ($this->filters as $key => $filter) {
-                            if ((isset($data[$key]))
-                                && ($data[$key] === $filter)) {
-                                $collection[$line[0]] = $data;
-                            }
-                        }
-                    }
+                --$iterator;
+                if ($iterator === 0) {
+                    break;
                 }
             }
         }
+
         $this->resetFilters();
 
         return $collection;
@@ -171,20 +185,8 @@ class Storage implements FileStorageInterface
      */
     public function readOne()
     {
-
-        //@reuse filter logic read read
-        //@todo read and write into different files
-        //@todo replace old file with new file
-        $reader     = $this->reader;
-        $line       = $reader->readOne();
-        if (is_array($line)
-            && count($line) === 2) {
-            $collection = array();
-            $collection[$line[0]] = (array) json_decode($line[1]);
-        } else {
-            $collection = null;
-        }
-
+        $this->limitBy(1);
+        $collection = $this->read();
         $this->resetFilters();
 
         return $collection;
@@ -196,6 +198,8 @@ class Storage implements FileStorageInterface
      */
     public function update(array $data)
     {
+        $reader = $this->reader;
+        $reader->rewind();
         // TODO: Implement update() method.
         //@reuse filter logic read read
         //@todo read and write into different files
@@ -224,7 +228,8 @@ class Storage implements FileStorageInterface
      */
     public function filterBy($key, $value)
     {
-        $this->filters[$key] = $value;
+        $this->filters[$key]    = $value;
+        $this->hasFilters       = true;
 
         return $this;
     }
@@ -235,7 +240,23 @@ class Storage implements FileStorageInterface
      */
     public function filterById($id)
     {
-        $this->filterById = $id;
+        $this->filterById       = $id;
+        $this->hasFilterById    = true;
+
+        return $this;
+    }
+
+    /**
+     * @param int $count
+     * @param null|int $offset
+     * @return $this
+     */
+    public function limitBy($count, $offset = null)
+    {
+        $this->limit = (int) $count;
+        if (!is_null($offset)) {
+            $this->offset = (int) $offset;
+        }
 
         return $this;
     }
@@ -263,23 +284,36 @@ class Storage implements FileStorageInterface
     /**
      * @return bool
      */
-    private function hasFilters()
+    private function hasLimit()
     {
-        return (!empty($this->filters));
+        return (is_int($this->limit));
     }
 
     /**
      * @return bool
      */
-    private function hasFilterById()
+    private function hasOffset()
     {
-        return (!is_null($this->filterById));
+        return (is_int($this->offset));
+    }
+
+    /**
+     * @param mixed|array $line
+     * @return bool
+     */
+    private function isValidLine($line)
+    {
+        return ((is_array($line) && count($line) === 2));
     }
 
     private function resetFilters()
     {
-        $this->filters      = array();
-        $this->filterById   = null;
+        $this->filters          = array();
+        $this->filterById       = null;
+        $this->hasFilterById    = false;
+        $this->hasFilters       = false;
+        $this->limit            = null;
+        $this->offset           = null;
     }
 
     /**
@@ -299,5 +333,17 @@ class Storage implements FileStorageInterface
 
             throw new InvalidArgumentException($message);
         }
+    }
+
+    /**
+     * @param Reader $reader
+     * @param int $offset
+     * @return Reader
+     */
+    private function seekReaderToOffset(Reader $reader, $offset)
+    {
+        $reader(($offset - 1));
+
+        return $reader;
     }
 }
