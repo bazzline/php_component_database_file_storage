@@ -7,11 +7,13 @@
 namespace Net\Bazzline\Database\FileStorage;
 
 use Net\Bazzline\Component\Csv\Reader\Reader;
-use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer\Writer;
 
 class Storage implements FileStorageInterface
 {
+    const KEY_ID    = 0;
+    const KEY_DATA  = 1;
+
     /** @var array */
     private $filters;
 
@@ -120,7 +122,7 @@ class Storage implements FileStorageInterface
     public function create(array $data)
     {
         $id     = $this->generator->generate();
-        $line   = array($id, json_encode($data));
+        $line   = $this->createLine($id, $data);
         $writer = $this->writer;
 
         $writer($line);
@@ -150,21 +152,22 @@ class Storage implements FileStorageInterface
         while ($line = $reader()) {
             if ($this->isValidLine($line)) {
                 if ($this->hasFilterById) {
-                    if ($line[0] === $this->filterById) {
-                        $collection[$line[0]] = (array) json_decode($line[1]);
+                    if ($this->lineContainsId($line, $this->filterById)) {
+                        $collection = $this->addLineToCollection($line, $collection);
                         break;
                     }
                 } else if ($this->hasFilters) {
-                    $data = (array) json_decode($line[1]);
+                    $data = $this->getDataFromLine($line);
 
-                    foreach ($this->filters as $key => $filter) {
+                    foreach ($this->filters as $key => $value) {
                         if ((isset($data[$key]))
-                            && ($data[$key] === $filter)) {
-                            $collection[$line[0]] = $data;
+                            && ($data[$key] === $value)) {
+                            $line = $this->setDataInLine($line, $data);
+                            $collection = $this->addLineToCollection($line, $collection);
                         }
                     }
                 } else {
-                    $collection[$line[0]] = (array) json_decode($line[1]);
+                    $collection = $this->addLineToCollection($line, $collection);
                 }
                 --$iterator;
                 if ($iterator === 0) {
@@ -199,11 +202,50 @@ class Storage implements FileStorageInterface
     public function update(array $data)
     {
         $reader = $this->reader;
+        $writer = $this->writer;
+        $path   = $this->path . '.update';
         $reader->rewind();
+
+        $writer->copy($path, true);
+        $writer->truncate();
+
         // TODO: Implement update() method.
         //@reuse filter logic read read
         //@todo read and write into different files
         //@todo replace old file with new file
+        while ($line = $reader()) {
+            if ($this->isValidLine($line)) {
+                if ($this->hasFilterById) {
+                    if ($this->lineContainsId($line, $this->filterById)) {
+                        $collection[$line[self::KEY_ID]] = $data;
+                    } else {
+                        $collection[$line[self::KEY_ID]] = (array) json_decode($line[self::KEY_DATA]);
+                    }
+                } else if ($this->hasFilters) {
+                    $existingData = (array) json_decode($line[1]);
+                    $foo = true;
+
+                    foreach ($this->filters as $key => $filter) {
+                        if ((isset($existingData[$key]))
+                            && ($existingData[$key] === $filter)) {
+                            $foo = true;
+                            $collection[$line[self::KEY_ID]] = $data;
+                        } else {
+                            $foo = false;
+                            break;
+                        }
+                    }
+
+                    if ($foo) {
+                        $collection[$line[self::KEY_ID]] = $data;
+                    } else {
+                        $collection[$line[self::KEY_ID]] = (array) json_decode($line[self::KEY_DATA]);
+                    }
+                } else {
+                    $collection[$line[self::KEY_ID]] = $data;
+                }
+            }
+        }
         $this->resetFilters();
     }
 
@@ -345,5 +387,61 @@ class Storage implements FileStorageInterface
         $reader(($offset - 1));
 
         return $reader;
+    }
+
+    /**
+     * @param array $line
+     * @param string $id
+     * @return bool
+     */
+    private function lineContainsId(array $line, $id)
+    {
+        return ($line[self::KEY_ID] === $id);
+    }
+
+    /**
+     * @param array $line
+     * @param array $collection
+     * @return array
+     */
+    private function addLineToCollection(array &$line, array &$collection)
+    {
+        $collection[$line[self::KEY_ID]] = $this->getDataFromLine($line);
+
+        return $collection;
+    }
+
+    /**
+     * @param array $line
+     * @return array
+     */
+    private function getDataFromLine(array &$line)
+    {
+        return (array) json_decode($line[self::KEY_DATA]);
+    }
+
+    /**
+     * @param array $line
+     * @param array $data
+     * @return array
+     */
+    private function setDataInLine(array &$line, array &$data)
+    {
+        $line[self::KEY_DATA] = json_encode($data);
+
+        return $line;
+    }
+
+    /**
+     * @param string $id
+     * @param array $data
+     * @return array
+     */
+    private function createLine($id, array $data)
+    {
+        $line = array(self::KEY_ID => $id);
+        $line = $this->setDataInLine($line, $data);
+
+        return $line;
     }
 }
