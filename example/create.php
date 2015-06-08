@@ -20,4 +20,4 @@ $data = array(
 
 $id = $storage->create($data);
 
-echo 'content "' . var_export($data, true) . '" written in "' . $path . '" with id "' . $id . '"' . PHP_EOL;
+echo 'content "' . json_encode($data) . '" written in "' . $path . '" with id "' . $id . '"' . PHP_EOL;

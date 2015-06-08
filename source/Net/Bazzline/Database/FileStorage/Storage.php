@@ -126,14 +126,13 @@ class Storage implements FileStorageInterface
     {
         $collection = array();
         $reader     = $this->reader;
-        reset($reader);
+        $reader->rewind();
 
         if (!$this->hasFilterById()
             && !$this->hasFilters()) {
             while ($line = $reader()) {
                 if (is_array($line)
                     && count($line) === 2) {
-                    echo var_export($line, true) . PHP_EOL;
                     $collection[$line[0]] = (array) json_decode($line[1]);
                 }
             }
@@ -220,6 +219,8 @@ class Storage implements FileStorageInterface
      * @param mixed $key
      * @param mixed $value
      * @return $this
+     * @todo implement a way that it is also valid to filter by $key
+     *  (without value) and vice versa
      */
     public function filterBy($key, $value)
     {

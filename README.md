@@ -46,6 +46,9 @@ public function filterById($id);
 
 ## Future Improvements
 
+* implement count
+* extend "filterBy"
+    * $key and $value are optional to filter by key or by value
 * take a look to [bigdump](https://github.com/wires/bigdump)
 * take a look to [reactphp/filesystem](https://github.com/reactphp/filesystem)
 * take a look to [file wrapper](https://php.net/manual/en/wrappers.file.php)
