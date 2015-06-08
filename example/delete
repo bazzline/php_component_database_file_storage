@@ -28,18 +28,13 @@ foreach ($collection as $id => $data) {
 if (is_null($filterById)) {
     echo 'no data available in "' . $path . '"' . PHP_EOL;
 } else {
-    $data = array(
-        'foo'   => 'bar',
-        'bar'   => 'foo',
-        'baz'   => date('Y-m-d H:i:s')
-    );
     echo 'number of entries: ' . $iterator . PHP_EOL;
-    echo 'updating id "' . $filterById . '" with "' . var_export($data, true) . PHP_EOL;
+    echo 'deleting id "' . $filterById . PHP_EOL;
     echo PHP_EOL;
 
     $storage->filterById($filterById);
-    if ($storage->update($data)) {
-        echo 'update was successful' . PHP_EOL;
+    if ($storage->delete()) {
+        echo 'deletion was successful' . PHP_EOL;
         echo 'dumping data ...' . PHP_EOL;
         echo PHP_EOL;
         $collection = $storage->read();

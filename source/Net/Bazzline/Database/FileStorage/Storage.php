@@ -152,19 +152,13 @@ class Storage implements FileStorageInterface
         while ($line = $reader()) {
             if ($this->isValidLine($line)) {
                 if ($this->hasFilterById) {
-                    if ($this->lineContainsId($line, $this->filterById)) {
+                    if ($this->lineHasId($line, $this->filterById)) {
                         $collection = $this->addLineToCollection($line, $collection);
                         break;
                     }
                 } else if ($this->hasFilters) {
-                    $data = $this->getDataFromLine($line);
-
-                    foreach ($this->filters as $key => $value) {
-                        if ((isset($data[$key]))
-                            && ($data[$key] === $value)) {
-                            $line = $this->setDataInLine($line, $data);
-                            $collection = $this->addLineToCollection($line, $collection);
-                        }
+                    if ($this->lineHasFilters($line, $this->filters)) {
+                        $collection = $this->addLineToCollection($line, $collection);
                     }
                 } else {
                     $collection = $this->addLineToCollection($line, $collection);
@@ -201,52 +195,7 @@ class Storage implements FileStorageInterface
      */
     public function update(array $data)
     {
-        $reader = $this->reader;
-        $writer = $this->writer;
-        $path   = $this->path . '.update';
-        $reader->rewind();
-
-        $writer->copy($path, true);
-        $writer->truncate();
-
-        // TODO: Implement update() method.
-        //@reuse filter logic read read
-        //@todo read and write into different files
-        //@todo replace old file with new file
-        while ($line = $reader()) {
-            if ($this->isValidLine($line)) {
-                if ($this->hasFilterById) {
-                    if ($this->lineContainsId($line, $this->filterById)) {
-                        $collection[$line[self::KEY_ID]] = $data;
-                    } else {
-                        $collection[$line[self::KEY_ID]] = (array) json_decode($line[self::KEY_DATA]);
-                    }
-                } else if ($this->hasFilters) {
-                    $existingData = (array) json_decode($line[1]);
-                    $foo = true;
-
-                    foreach ($this->filters as $key => $filter) {
-                        if ((isset($existingData[$key]))
-                            && ($existingData[$key] === $filter)) {
-                            $foo = true;
-                            $collection[$line[self::KEY_ID]] = $data;
-                        } else {
-                            $foo = false;
-                            break;
-                        }
-                    }
-
-                    if ($foo) {
-                        $collection[$line[self::KEY_ID]] = $data;
-                    } else {
-                        $collection[$line[self::KEY_ID]] = (array) json_decode($line[self::KEY_DATA]);
-                    }
-                } else {
-                    $collection[$line[self::KEY_ID]] = $data;
-                }
-            }
-        }
-        $this->resetFilters();
+        return $this->updateOrDelete($data);
     }
 
     /**
@@ -254,11 +203,7 @@ class Storage implements FileStorageInterface
      */
     public function delete()
     {
-        // TODO: Implement delete() method.
-        //@reuse filter logic read read
-        //@todo read and write into different files
-        //@todo replace old file with new file
-        $this->resetFilters();
+        return $this->updateOrDelete(null);
     }
 
     /**
@@ -301,6 +246,86 @@ class Storage implements FileStorageInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param array $data - null triggers a deletion of fitting lines
+     * @return bool
+     */
+    private function updateOrDelete(array $data = null)
+    {
+        $collection     = array();
+        $delete         = (is_null($data));
+        $wasSuccessful  = false;
+        $path           = $this->path . ($delete ? '.delete' : '.update');
+        $reader         = $this->reader;
+        $writer         = $this->writer;
+        $reader->rewind();
+
+        $writer->copy($path, true);
+        $writer->truncate();
+
+        if ($this->hasOffset()) {
+            $reader = $this->seekReaderToOffset($reader, $this->offset);
+        }
+
+        $iterator = ($this->hasLimit()) ? $this->limit : -1;
+
+        while ($line = $reader()) {
+            if ($this->isValidLine($line)) {
+                if ($this->hasFilterById) {
+                    $addLine = true;
+                    if ($this->lineHasId($line, $this->filterById)) {
+                        if ($delete) {
+                            $addLine = false;
+                        } else {
+                            $line = $this->setDataInLine($line, $data);
+                        }
+                    }
+                } else if ($this->hasFilters) {
+                    $addLine = true;
+                    if ($this->lineHasFilters($line, $this->filters)) {
+                        if ($delete) {
+                            $addLine = false;
+                        } else {
+                            $line = $this->setDataInLine($line, $data);
+                        }
+                    }
+                } else {
+                    $addLine = (!$delete);
+                }
+
+                if ($addLine) {
+                    $collection = $this->addLineToCollection($line, $collection);
+                }
+                --$iterator;
+                if ($iterator === 0) {
+                    break;
+                }
+            }
+        }
+
+        foreach ($collection as $id => $data) {
+            $line = $this->createLine($id, $data);
+
+            if ($writer($line) == false) {
+                $wasSuccessful = false;
+                break;
+            } else {
+                $wasSuccessful = true;
+            }
+        }
+
+        if ($wasSuccessful) {
+            $writer->copy($this->path, true);
+            unlink($path);
+        } else {
+            $writer->setPath($this->path, true);
+        }
+
+        $this->resetFilters();
+
+        return $wasSuccessful;
     }
 
     /**
@@ -394,9 +419,32 @@ class Storage implements FileStorageInterface
      * @param string $id
      * @return bool
      */
-    private function lineContainsId(array $line, $id)
+    private function lineHasId(array $line, $id)
     {
         return ($line[self::KEY_ID] === $id);
+    }
+
+    /**
+     * @param array $line
+     * @param array $filters
+     * @return bool
+     */
+    private function lineHasFilters(array &$line, array &$filters)
+    {
+        $lineHasFilters = false;
+        $data = $this->getDataFromLine($line);
+
+        foreach ($filters as $key => $value) {
+            if ((isset($data[$key]))
+                && ($data[$key] === $value)) {
+                $lineHasFilters = true;
+            } else {
+                $lineHasFilters = false;
+                break;
+            }
+        }
+
+        return $lineHasFilters;
     }
 
     /**
