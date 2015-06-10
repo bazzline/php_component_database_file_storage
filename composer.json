@@ -15,14 +15,14 @@
     "minimum-stability": "dev",
     "require": {
         "net_bazzline/component_lock": "1.0.3",
-        "net_bazzline/php_component_csv": "1.0.0",
+        "net_bazzline/php_component_csv": "1.1.0",
         "php": ">=5.3.3",
         "rhumsaa/uuid": "2.8.0"
     },
     "require-dev": {
         "mikey179/vfsstream": "1.5.0",
         "mockery/mockery": "0.9.4",
-        "phpunit/phpunit": "4.6.4"
+        "phpunit/phpunit": "4.7.2"
     },
     "autoload": {
         "psr-0": {
