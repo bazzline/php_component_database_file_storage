@@ -1,6 +1,6 @@
-# Database File Storage for PHP
+# Database File Repository for PHP
 
-## [crud](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) [storage interface](https://github.com/stevleibelt/php_component_database_file_storage/blob/master/source/Leibelt/Stev/Database/FileStorage/FileStorageInterface.php)
+## [crud](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) [storage interface](https://github.com/bazzline/php_component_database_file_storage/blob/master/source/Net/Bazzline/Database/FileStorage/RepositoryInterface.php)
 
 ```php
 /**

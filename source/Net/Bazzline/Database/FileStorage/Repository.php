@@ -10,7 +10,7 @@ use Net\Bazzline\Component\Csv\Reader\Reader;
 use Net\Bazzline\Component\Csv\Writer\Writer;
 use Net\Bazzline\Component\Lock\LockInterface;
 
-class Storage implements FileStorageInterface
+class Repository implements RepositoryInterface
 {
     const KEY_ID    = 0;
     const KEY_DATA  = 1;

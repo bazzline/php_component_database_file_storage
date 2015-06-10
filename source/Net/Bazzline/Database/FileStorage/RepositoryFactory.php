@@ -10,27 +10,26 @@ use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer\WriterFactory;
 use Net\Bazzline\Component\Lock\FileLock;
 
-class StorageFactory
+class RepositoryFactory
 {
     /**
-     * @return Storage
+     * @return Repository
      */
     public function create()
     {
         $generator      = new UUIDGenerator();
         $lock           = new FileLock();
-        //@todo implement switch for php 5.3
         $readerFactory  = new ReaderFactory();
         $reader         = $readerFactory->create();
-        $storage        = new Storage();
+        $repository     = new Repository();
         $writerFactory  = new WriterFactory();
         $writer         = $writerFactory->create();
 
-        $storage->injectGenerator($generator);
-        $storage->injectLock($lock);
-        $storage->injectReader($reader);
-        $storage->injectWriter($writer);
+        $repository->injectGenerator($generator);
+        $repository->injectLock($lock);
+        $repository->injectReader($reader);
+        $repository->injectWriter($writer);
 
-        return $storage;
+        return $repository;
     }
 }

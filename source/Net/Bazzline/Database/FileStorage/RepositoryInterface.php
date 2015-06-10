@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Database\FileStorage;
 
-interface FileStorageInterface
+interface RepositoryInterface
 {
     /**
      * @param array $data
