@@ -4,7 +4,7 @@
  * @since 2015-06-07 
  */
 
-namespace Net\Bazzline\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage;
 
 use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer\WriterFactory;

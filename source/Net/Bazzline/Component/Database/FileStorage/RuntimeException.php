@@ -4,7 +4,7 @@
  * @since 2015-06-09
  */
 
-namespace Net\Bazzline\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage;
 
 use RuntimeException as ParentClass;
 

@@ -4,7 +4,7 @@
  * @since 2015-04-12 
  */
 
-namespace Net\Bazzline\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage;
 
 use Rhumsaa\Uuid\Uuid;
 

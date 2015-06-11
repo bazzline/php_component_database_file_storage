@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$factory    = new \Net\Bazzline\Database\FileStorage\RepositoryFactory();
+$factory    = new \Net\Bazzline\Component\Database\FileStorage\RepositoryFactory();
 $storage    = $factory->create();
 $path       = __DIR__ . '/storage';
 

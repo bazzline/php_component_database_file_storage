@@ -26,8 +26,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Net\\Bazzline\\Database\\FileStorage": "source/",
-            "Test\\Net\\Bazzline\\Database\\FileStorage": "test/"
+            "Net\\Bazzline\\Component\\Database\\FileStorage": "source/",
+            "Test\\Net\\Bazzline\\Component\\Database\\FileStorage": "test/"
         }
     }
 }
