@@ -6,8 +6,6 @@
 
 namespace Test\Net\Bazzline\Component\Database\FileStorage;
 
-use Net\Bazzline\Component\Database\FileStorage\UUIDGenerator;
-
 class UUIDGeneratorTest extends FileStorageTestCase
 {
     public function testGenerate()
@@ -16,5 +14,6 @@ class UUIDGeneratorTest extends FileStorageTestCase
         $uuid       = $generator->generate();
 
         $this->assertTrue(is_string($uuid));
+        $this->assertEquals(36, strlen($uuid));
     }
 }
