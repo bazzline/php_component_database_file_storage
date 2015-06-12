@@ -61,4 +61,42 @@ abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
     {
         return new UUIDGenerator();
     }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface
+     */
+    protected function getMockOfIdGeneratorInterface()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface');
+    }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileLock
+     */
+    protected function getMockOfFileLock()
+    {
+        $mock = Mockery::mock('Net\Bazzline\Component\Lock\FileLock');
+
+        $mock->shouldReceive('isLocked')
+            ->andReturn(false)
+            ->byDefault();
+
+        return $mock;
+    }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Csv\Reader\Reader
+     */
+    protected function getMockOfReader()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Csv\Reader\Reader');
+    }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Csv\Writer\Writer
+     */
+    protected function getMockOfWriter()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Csv\Writer\Writer');
+    }
 }
