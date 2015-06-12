@@ -374,6 +374,7 @@ class Repository implements RepositoryInterface
     {
         if (!is_dir($path)) {
             //@todo replace by command if needed
+            //http://php.net/manual/en/function.clearstatcache.php
             //$couldNotBeCreated = (!mkdir($path, 0755, true));
             exec('/usr/bin/env mkdir -p ' . $path);
             $couldNotBeCreated = false; //@todo implement
