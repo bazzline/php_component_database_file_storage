@@ -13,7 +13,7 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 $iterator   = 0;
-$collection = $storage->read();
+$collection = $storage->readMany();
 
 foreach ($collection as $id => $data) {
     ++$iterator;
@@ -31,7 +31,7 @@ foreach ($filters as $key => $value) {
     echo 'filter by key "' . $key . '" with value "' . $value . '"' . PHP_EOL;
     echo PHP_EOL;
     $storage->filterBy($key, $value);
-    $collection = $storage->read();
+    $collection = $storage->readMany();
     foreach ($collection as $id => $data) {
         echo $id . ': ' . var_export($data, true) . PHP_EOL;
     }

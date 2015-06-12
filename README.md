@@ -12,7 +12,7 @@ public function create($data);
 /**
  * @return array
  */
-public function read();
+public function readMany();
 
 /**
  * @return null|mixed - nothing or data

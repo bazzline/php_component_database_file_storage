@@ -12,23 +12,27 @@ $storage    = $factory->create();
 $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
+
+$collection = $storage->readMany();
+$filterById = null;
 $iterator   = 0;
-$collection = $storage->read();
 
 foreach ($collection as $id => $data) {
+    //we want to fetch the second id
+    if ($iterator < 2) {
+        $filterById = $id;
+    }
     ++$iterator;
 }
 
-$limit = ($iterator >= 3) ? 2 : (($iterator >= 2) ? 1 : 0);
-
-if ($limit === 0) {
-    echo 'not enough data available in "' . $path . '"' . PHP_EOL;
+if (is_null($filterById)) {
+    echo 'no data available in "' . $path . '"' . PHP_EOL;
 } else {
-    echo 'Number of entries: ' . $iterator . PHP_EOL;
-    echo 'Limit is set to "' . $limit . '"' . PHP_EOL;
+    echo 'number of entries: ' . $iterator . PHP_EOL;
+    echo 'filterById "' . $filterById . '"' . PHP_EOL;
     echo PHP_EOL;
-    $storage->limitBy($limit);
-    $collection = $storage->read();
+    $storage->filterById($filterById);
+    $collection = $storage->readMany();
     foreach ($collection as $id => $data) {
         echo $id . ': ' . var_export($data, true) . PHP_EOL;
     }

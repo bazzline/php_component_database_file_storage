@@ -13,7 +13,7 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 
-$collection = $storage->read();
+$collection = $storage->readMany();
 
 foreach ($collection as $id => $data) {
     echo $id . ': ' . var_export($data, true) . PHP_EOL;

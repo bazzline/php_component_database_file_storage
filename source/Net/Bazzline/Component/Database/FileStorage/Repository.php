@@ -175,7 +175,7 @@ class Repository implements RepositoryInterface
      * @return array
      * @todo
      */
-    public function read()
+    public function readMany()
     {
         $collection = array();
         $reader     = $this->reader;
@@ -221,7 +221,7 @@ class Repository implements RepositoryInterface
     public function readOne()
     {
         $this->limitBy(1);
-        $collection = $this->read();
+        $collection = $this->readMany();
         $this->resetFilters();
 
         return $collection;

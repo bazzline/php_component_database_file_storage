@@ -13,24 +13,22 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 $iterator   = 0;
-$collection = $storage->read();
+$collection = $storage->readMany();
 
 foreach ($collection as $id => $data) {
     ++$iterator;
 }
 
-$limit  = ($iterator > 3) ? 3 : (($iterator > 2) ? 2 : 0);
-$offset = ($limit > 3) ? 2 : (($limit > 2) ? 1 : 0);
+$limit = ($iterator >= 3) ? 2 : (($iterator >= 2) ? 1 : 0);
 
 if ($limit === 0) {
     echo 'not enough data available in "' . $path . '"' . PHP_EOL;
 } else {
     echo 'Number of entries: ' . $iterator . PHP_EOL;
     echo 'Limit is set to "' . $limit . '"' . PHP_EOL;
-    echo 'Offset is set to "' . $offset . '"' . PHP_EOL;
     echo PHP_EOL;
-    $storage->limitBy($limit, $offset);
-    $collection = $storage->read();
+    $storage->limitBy($limit);
+    $collection = $storage->readMany();
     foreach ($collection as $id => $data) {
         echo $id . ': ' . var_export($data, true) . PHP_EOL;
     }
