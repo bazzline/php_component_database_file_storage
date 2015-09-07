@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Component\Database\FileStorage;
 
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 class UUIDGenerator implements IdGeneratorInterface
 {
