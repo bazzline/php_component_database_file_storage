@@ -51,6 +51,18 @@ public function filterById($id);
 public function limitBy($count, $offset = null);
 ```
 
+# Install
+
+## By Hand
+
+    mkdir -p vendor/net_bazzline/php_component_locator_database_file_storage
+    cd vendor/net_bazzline/php_component_locator_database_file_storage
+    git clone https://github.com/bazzline/php_component_locator_database_file_storage .
+
+## With [Packagist](https://packagist.org/packages/net_bazzline/php_component_locator_database_file_storage)
+
+    composer require net_bazzline/php_component_locator_database_file_storage:dev-master
+
 # Benefits
 
 * implemented [locking](https://packagist.org/packages/net_bazzline/component_lock) to prevent multiple reads and writes
