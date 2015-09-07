@@ -294,7 +294,7 @@ class Repository implements RepositoryInterface
     {
         $collection     = array();
         $delete         = (is_null($data));
-        $wasSuccessful  = false;
+        $wasSuccessful  = true;
         $path           = $this->path . ($delete ? '.delete' : '.update');
         $reader         = $this->reader;
         $writer         = $this->writer;
