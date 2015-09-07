@@ -14,15 +14,15 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "net_bazzline/component_lock": "1.0.*",
-        "net_bazzline/php_component_csv": "1.5.*",
+        "net_bazzline/component_lock": ">=1.0.3",
+        "net_bazzline/php_component_csv": ">=1.5.2",
         "php": ">=5.3.3",
-        "rhumsaa/uuid": "2.8.0"
+        "rhumsaa/uuid": ">=2.8.0"
     },
     "require-dev": {
-        "mikey179/vfsstream": "1.5.0",
-        "mockery/mockery": "0.9.4",
-        "phpunit/phpunit": "4.7.6"
+        "mikey179/vfsstream": ">=1.5.0",
+        "mockery/mockery": ">=0.9.4",
+        "phpunit/phpunit": "4.8.*"
     },
     "autoload": {
         "psr-0": {
