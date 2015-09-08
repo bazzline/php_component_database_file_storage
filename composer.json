@@ -2,7 +2,7 @@
     "description": "local file database",
     "keywords": ["php", "local", "file", "database"],
     "license": "LGPLv3",
-    "name": "net_bazzline/php_component_locator_database_file_storage",
+    "name": "net_bazzline/php_component_database_file_storage",
     "type": "library",
     "authors": [
         {
