@@ -55,13 +55,13 @@ public function limitBy($count, $offset = null);
 
 ## By Hand
 
-    mkdir -p vendor/net_bazzline/php_component_locator_database_file_storage
-    cd vendor/net_bazzline/php_component_locator_database_file_storage
-    git clone https://github.com/bazzline/php_component_locator_database_file_storage .
+    mkdir -p vendor/net_bazzline/php_component_database_file_storage
+    cd vendor/net_bazzline/php_component_database_file_storage
+    git clone https://github.com/bazzline/php_component_database_file_storage .
 
-## With [Packagist](https://packagist.org/packages/net_bazzline/php_component_locator_database_file_storage)
+## With [Packagist](https://packagist.org/packages/net_bazzline/php_component_database_file_storage)
 
-    composer require net_bazzline/php_component_locator_database_file_storage:dev-master
+    composer require net_bazzline/php_component_database_file_storage:dev-master
 
 # Benefits
 
