@@ -53,13 +53,6 @@ class Repository implements RepositoryInterface
         $this->resetFilters();
     }
 
-    public function __destruct()
-    {
-        if ($this->lock->isLocked()) {
-            $this->lock->release();
-        }
-    }
-
     /**
      * @param IdGeneratorInterface $generator
      * @return $this
@@ -79,9 +72,7 @@ class Repository implements RepositoryInterface
     public function injectLock(LockInterface $lock)
     {
         if (!is_null($this->path)) {
-            $lock->setName($this->path);
-            $this->validateLock($lock);
-            $lock->acquire();
+            $lock->setResource($this->path);
         }
 
         $this->lock = $lock;
@@ -104,12 +95,12 @@ class Repository implements RepositoryInterface
             touch($this->path);
         }
 
-        if (!is_null($this->lock)) {
+        if ($this->lock instanceof LockInterface) {
             //it is possible that the user switches the path
             if ($this->lock->isLocked()) {
                 $this->lock->release();
             }
-            $this->lock->setName($this->path);
+            $this->lock->setResource($this->path);
             $this->validateLock($this->lock);
             $this->lock->acquire();
         }
@@ -163,7 +154,9 @@ class Repository implements RepositoryInterface
         $line   = $this->createLine($id, $data);
         $writer = $this->writer;
 
+        $this->acquireLock();
         $writer($line);
+        $this->releaseLockIfNeeded();
         $this->resetFilters();
 
         return $id;
@@ -300,6 +293,7 @@ class Repository implements RepositoryInterface
         $writer         = $this->writer;
         $reader->rewind();
 
+        $this->acquireLock();
         $writer->copy($path, true);
         $writer->truncate();
 
@@ -358,9 +352,10 @@ class Repository implements RepositoryInterface
             $writer->copy($this->path, true);
             unlink($path);
         } else {
-            $writer->setPath($this->path, true);
+            $writer->setPath($this->path);
         }
 
+        $this->releaseLockIfNeeded();
         $this->resetFilters();
 
         return $wasSuccessful;
@@ -448,7 +443,7 @@ class Repository implements RepositoryInterface
     private function validateLock(LockInterface $lock)
     {
         if ($lock->isLocked()) {
-            $message = 'lock exists for "' . $lock->getName() . '"';
+            $message = 'lock exists for "' . $lock->getResource() . '"';
 
             throw new RuntimeException($message);
         }
@@ -543,5 +538,17 @@ class Repository implements RepositoryInterface
         $line = $this->setDataInLine($line, $data);
 
         return $line;
+    }
+
+    private function acquireLock()
+    {
+        $this->lock->acquire();
+    }
+
+    private function releaseLockIfNeeded()
+    {
+        if ($this->lock->isLocked()) {
+            $this->lock->release();
+        }
     }
 }
