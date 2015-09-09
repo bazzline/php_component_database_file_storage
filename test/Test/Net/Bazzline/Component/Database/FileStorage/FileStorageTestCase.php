@@ -71,11 +71,11 @@ abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileLock
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileHandlerLock
      */
     protected function getMockOfFileLock()
     {
-        $mock = Mockery::mock('Net\Bazzline\Component\Lock\FileLock');
+        $mock = Mockery::mock('Net\Bazzline\Component\Lock\FileHandlerLock');
 
         $mock->shouldReceive('isLocked')
             ->andReturn(false)

@@ -13,16 +13,16 @@ class RepositoryTest extends FileStorageTestCase
     /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface */
     private $generator;
 
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileLock*/
+    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileHandlerLock */
     private $lock;
 
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Reader\Reader*/
+    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Reader\Reader */
     private $reader;
 
     /** @var Repository */
     private $repository;
 
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Writer\Writer*/
+    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Writer\Writer */
     private $writer;
 
     protected function setUp()
