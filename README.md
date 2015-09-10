@@ -90,6 +90,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.3.2](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.2) - released at 10.09.2015
+    * fixed issue when dealing with php 5.3
 * [0.3.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.1) - released at 10.09.2015
     * fixed broken unit test
 * [0.3.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.0) - released at 10.09.2015
