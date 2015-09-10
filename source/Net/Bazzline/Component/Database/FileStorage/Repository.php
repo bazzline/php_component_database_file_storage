@@ -264,8 +264,8 @@ class Repository implements RepositoryInterface
         $writer         = $this->writer;
         $reader->rewind();
 
-        $this->acquireLock();
         $writer->copy($path, true);
+        $this->acquireLock();
         $writer->truncate();
 
         if ($this->hasOffset()) {
@@ -319,6 +319,7 @@ class Repository implements RepositoryInterface
             }
         }
 
+        $this->releaseLockIfNeeded();
         if ($wasSuccessful) {
             $writer->copy($this->path, true);
             unlink($path);
@@ -326,7 +327,6 @@ class Repository implements RepositoryInterface
             $writer->setPath($this->path);
         }
 
-        $this->releaseLockIfNeeded();
         $this->resetFilters();
 
         return $wasSuccessful;
