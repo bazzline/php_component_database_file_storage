@@ -53,6 +53,7 @@ class LockableWriterForPhp5Dot3 extends WriterForPhp5Dot3 implements LockableWri
      */
     public function acquireLock()
     {
+        $this->bindLock($this->lock);
         $this->experiment->andFinallyStartTheExperiment();
     }
 

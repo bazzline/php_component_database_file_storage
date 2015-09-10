@@ -90,6 +90,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.3.4](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.4) - released at 10.09.2015
+    * fixed issue in *LockableWriterForPhp5Dot3*
 * [0.3.3](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.3) - released at 10.09.2015
     * fixed issue in *LockableWriterForPhp5Dot3*
 * [0.3.2](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.2) - released at 10.09.2015
