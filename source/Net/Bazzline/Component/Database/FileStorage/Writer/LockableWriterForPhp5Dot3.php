@@ -42,7 +42,6 @@ class LockableWriterForPhp5Dot3 extends WriterForPhp5Dot3 implements LockableWri
     public function injectLock(FileHandlerLock $lock)
     {
         $this->lock = $lock;
-        $this->bindLock($this->lock);
 
         if ($this->experiment instanceof Experiment) {
             $this->setupExperiment($this->lock, $this->experiment);
