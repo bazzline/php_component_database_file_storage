@@ -90,5 +90,7 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.3.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.1) - released at 10.09.2015
+    * fixed broken unit test
 * [0.3.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.0) - released at 10.09.2015
     * created and used own `LockableWriter` to switch from "FileNameLock" to "FileHandlerLock"

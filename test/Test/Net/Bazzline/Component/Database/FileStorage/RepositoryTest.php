@@ -22,19 +22,17 @@ class RepositoryTest extends FileStorageTestCase
     /** @var Repository */
     private $repository;
 
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Writer\Writer */
+    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface */
     private $writer;
 
     protected function setUp()
     {
         $this->generator    = $this->getMockOfIdGeneratorInterface();
-        $this->lock         = $this->getMockOfFileLock();
         $this->reader       = $this->getMockOfReader();
         $this->repository   = $this->getNewRepository();
         $this->writer       = $this->getMockOfWriter();
 
         $this->repository->injectGenerator($this->generator);
-        $this->repository->injectLock($this->lock);
         $this->repository->injectReader($this->reader);
         $this->repository->injectWriter($this->writer);
     }

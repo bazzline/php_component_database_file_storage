@@ -93,10 +93,10 @@ abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Mockery\MockInterface|\Net\Bazzline\Component\Csv\Writer\Writer
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface
      */
     protected function getMockOfWriter()
     {
-        return Mockery::mock('Net\Bazzline\Component\Csv\Writer\Writer');
+        return Mockery::mock('Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface');
     }
 }
