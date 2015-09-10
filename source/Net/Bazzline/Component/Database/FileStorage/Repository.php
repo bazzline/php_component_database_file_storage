@@ -7,7 +7,7 @@
 namespace Net\Bazzline\Component\Database\FileStorage;
 
 use Net\Bazzline\Component\Csv\Reader\Reader;
-use Net\Bazzline\Component\Lock\FileHandlerLock;
+use Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface;
 
 class Repository implements RepositoryInterface
 {
@@ -32,9 +32,6 @@ class Repository implements RepositoryInterface
     /** @var null|int */
     private $limit;
 
-    /** @var FileHandlerLock */
-    private $lock;
-
     /** @var null|int */
     private $offset;
 
@@ -44,7 +41,7 @@ class Repository implements RepositoryInterface
     /** @var Reader */
     private $reader;
 
-    /** @var LockableWriter */
+    /** @var LockableWriterInterface */
     private $writer;
 
     public function __construct()
@@ -64,22 +61,6 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * @param FileHandlerLock $lock
-     * @return $this
-     * @throws RuntimeException
-     */
-    public function injectLock(FileHandlerLock $lock)
-    {
-        if (!is_null($this->path)) {
-            $lock->setResource($this->path);
-        }
-
-        $this->lock = $lock;
-
-        return $this;
-    }
-
-    /**
      * @param string $path
      * @return $this
      * @throws InvalidArgumentException|RuntimeException
@@ -94,15 +75,6 @@ class Repository implements RepositoryInterface
             touch($this->path);
         }
 
-        if ($this->lock instanceof FileHandlerLock) {
-            //it is possible that the user switches the path
-            if ($this->lock->isLocked()) {
-                $this->lock->release();
-            }
-            $this->lock->setResource($this->path);
-            $this->validateLock($this->lock);
-            $this->lock->acquire();
-        }
         if (!is_null($this->reader)) {
             $this->reader->setPath($this->path);
         }
@@ -129,10 +101,10 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * @param LockableWriter $writer
+     * @param LockableWriterInterface $writer
      * @return $this
      */
-    public function injectWriter(LockableWriter $writer)
+    public function injectWriter(LockableWriterInterface $writer)
     {
         $this->writer = $writer;
 
@@ -436,19 +408,6 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * @param FileHandlerLock $lock
-     * @throws RuntimeException
-     */
-    private function validateLock(FileHandlerLock $lock)
-    {
-        if ($lock->isLocked()) {
-            $message = 'lock exists for "' . $lock->getResource() . '"';
-
-            throw new RuntimeException($message);
-        }
-    }
-
-    /**
      * @param Reader $reader
      * @param int $offset
      * @return Reader
@@ -539,11 +498,17 @@ class Repository implements RepositoryInterface
         return $line;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     private function acquireLock()
     {
         $this->writer->acquireLock();
     }
 
+    /**
+     * @throws RuntimeException
+     */
     private function releaseLockIfNeeded()
     {
         if ($this->writer->isLocked()) {

@@ -84,3 +84,11 @@ public function limitBy($count, $offset = null);
     * use a [temporary file](http://php.net/manual/en/function.tmpfile.php)
     * beeing even more pro, use [php://temp](http://php.net/manual/en/wrappers.php.php)
         * implement some kind of "intelligent" cache that counts the average size of an entry to determine the maximum number of entries before flushing the cache
+
+# 
+# History
+
+* upcomming
+    * @todo
+* [0.3.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.0) - released at 10.09.2015
+    * created and used own `LockableWriter` to switch from "FileNameLock" to "FileHandlerLock"
