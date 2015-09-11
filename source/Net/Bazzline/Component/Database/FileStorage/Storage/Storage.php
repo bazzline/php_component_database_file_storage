@@ -4,12 +4,20 @@
  * @since 2015-04-12 
  */
 
-namespace Net\Bazzline\Component\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage\Storage;
 
+use Net\Bazzline\Component\Database\FileStorage\IdGenerator\IdGeneratorInterface;
+use Net\Bazzline\Component\Database\FileStorage\InvalidArgumentException;
+use Net\Bazzline\Component\Database\FileStorage\RuntimeException;
 use Net\Bazzline\Component\Csv\Reader\Reader;
 use Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface;
 
-class Repository implements RepositoryInterface
+/**
+ * Class Storage
+ *
+ * @package Net\Bazzline\Component\Database\FileStorage\Storage
+ */
+class Storage implements StorageInterface
 {
     const KEY_ID    = 0;
     const KEY_DATA  = 1;

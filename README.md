@@ -1,6 +1,6 @@
-# Database File Repository for PHP
+# Database File Storage for PHP
 
-## [crud](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) [storage interface](https://github.com/bazzline/php_component_database_file_storage/blob/master/source/Net/Bazzline/Database/FileStorage/RepositoryInterface.php)
+## [crud](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) [storage interface](https://github.com/bazzline/php_component_database_file_storage/blob/master/source/Net/Bazzline/Database/FileStorage/StorageInterface.php)
 
 ```php
 /**
@@ -90,6 +90,9 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.4.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.0) - released at 11.09.2015
+    * moved code into directories (*Storage* and *IdGenerator*)
+    * renamed *Repository* to *Storage*
 * [0.3.4](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.4) - released at 10.09.2015
     * fixed issue in *LockableWriterForPhp5Dot3*
 * [0.3.3](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.3) - released at 10.09.2015

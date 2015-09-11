@@ -4,10 +4,15 @@
  * @since 2015-04-12 
  */
 
-namespace Net\Bazzline\Component\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage\IdGenerator;
 
 use Rhumsaa\Uuid\Uuid;
 
+/**
+ * Class UUIDGenerator
+ *
+ * @package Net\Bazzline\Component\Database\FileStorage\IdGenerator
+ */
 class UUIDGenerator implements IdGeneratorInterface
 {
     /**

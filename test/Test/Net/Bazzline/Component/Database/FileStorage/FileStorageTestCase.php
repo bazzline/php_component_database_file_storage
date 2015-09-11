@@ -7,11 +7,16 @@
 namespace Test\Net\Bazzline\Component\Database\FileStorage;
 
 use Mockery;
-use Net\Bazzline\Component\Database\FileStorage\Repository;
-use Net\Bazzline\Component\Database\FileStorage\UUIDGenerator;
+use Net\Bazzline\Component\Database\FileStorage\Storage\Storage;
+use Net\Bazzline\Component\Database\FileStorage\IdGenerator\UUIDGenerator;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * Class FileStorageTestCase
+ *
+ * @package Test\Net\Bazzline\Component\Database\FileStorage
+ */
 abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
 {
     protected function tearDown()
@@ -47,11 +52,11 @@ abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Repository
+     * @return Storage
      */
     protected function getNewRepository()
     {
-        return new Repository();
+        return new Storage();
     }
 
     /**
@@ -63,11 +68,11 @@ abstract class FileStorageTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGenerator\IdGeneratorInterface
      */
     protected function getMockOfIdGeneratorInterface()
     {
-        return Mockery::mock('Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface');
+        return Mockery::mock('Net\Bazzline\Component\Database\FileStorage\IdGenerator\IdGeneratorInterface');
     }
 
     /**

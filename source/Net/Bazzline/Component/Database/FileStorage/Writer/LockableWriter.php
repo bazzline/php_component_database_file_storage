@@ -12,7 +12,7 @@ use RuntimeException;
 
 /**
  * Class Writer
- * @package Net\Bazzline\Component\Database\FileStorage\Storage
+ * @package Net\Bazzline\Component\Database\FileStorage\Writer
  */
 class LockableWriter extends Writer implements LockableWriterInterface
 {

@@ -8,4 +8,9 @@ namespace Net\Bazzline\Component\Database\FileStorage;
 
 use RuntimeException as ParentClass;
 
+/**
+ * Class RuntimeException
+ *
+ * @package Net\Bazzline\Component\Database\FileStorage\IdGenerator
+ */
 class RuntimeException  extends ParentClass {}

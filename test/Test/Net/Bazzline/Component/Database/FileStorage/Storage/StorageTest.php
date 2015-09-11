@@ -4,23 +4,26 @@
  * @since 2015-06-11
  */
 
-namespace Test\Net\Bazzline\Component\Database\FileStorage;
+namespace Test\Net\Bazzline\Component\Database\FileStorage\Storage;
 
-use Net\Bazzline\Component\Database\FileStorage\Repository;
+use Net\Bazzline\Component\Database\FileStorage\Storage\Storage;
+use Test\Net\Bazzline\Component\Database\FileStorage\FileStorageTestCase;
 
-class RepositoryTest extends FileStorageTestCase
+/**
+ * Class StorageTest
+ *
+ * @package Test\Net\Bazzline\Component\Database\FileStorage
+ */
+class StorageTest extends FileStorageTestCase
 {
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGeneratorInterface */
+    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\IdGenerator\IdGeneratorInterface */
     private $generator;
-
-    /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Lock\FileHandlerLock */
-    private $lock;
 
     /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Csv\Reader\Reader */
     private $reader;
 
-    /** @var Repository */
-    private $repository;
+    /** @var Storage */
+    private $storage;
 
     /** @var \Mockery\MockInterface|\Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterInterface */
     private $writer;
@@ -29,12 +32,12 @@ class RepositoryTest extends FileStorageTestCase
     {
         $this->generator    = $this->getMockOfIdGeneratorInterface();
         $this->reader       = $this->getMockOfReader();
-        $this->repository   = $this->getNewRepository();
+        $this->storage   = $this->getNewRepository();
         $this->writer       = $this->getMockOfWriter();
 
-        $this->repository->injectGenerator($this->generator);
-        $this->repository->injectReader($this->reader);
-        $this->repository->injectWriter($this->writer);
+        $this->storage->injectGenerator($this->generator);
+        $this->storage->injectReader($this->reader);
+        $this->storage->injectWriter($this->writer);
     }
 
     public function testCreate()

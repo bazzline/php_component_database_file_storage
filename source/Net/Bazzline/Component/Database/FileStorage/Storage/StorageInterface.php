@@ -4,9 +4,14 @@
  * @since 2015-04-12 
  */
 
-namespace Net\Bazzline\Component\Database\FileStorage;
+namespace Net\Bazzline\Component\Database\FileStorage\Storage;
 
-interface RepositoryInterface
+/**
+ * Interface StorageInterface
+ *
+ * @package Net\Bazzline\Component\Database\FileStorage\Storage
+ */
+interface StorageInterface
 {
     /**
      * @param array $data

@@ -14,7 +14,7 @@ use RuntimeException;
  * Class LockableWriterForPhp5Dot3
 
  *
-*@package Net\Bazzline\Component\Database\FileStorage\Writer
+ * @package Net\Bazzline\Component\Database\FileStorage\Writer
  */
 class LockableWriterForPhp5Dot3 extends WriterForPhp5Dot3 implements LockableWriterInterface
 {
