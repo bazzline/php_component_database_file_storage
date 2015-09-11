@@ -52,7 +52,7 @@ class LockableWriter extends Writer implements LockableWriterInterface
     public function acquireLock()
     {
         $this->bindLock($this->lock);
-        $this->experiment->andFinallyStartTheExperiment();
+        $this->experiment->andTryIt();
     }
 
     /**
@@ -85,21 +85,21 @@ class LockableWriter extends Writer implements LockableWriterInterface
      */
     private function setupExperiment(FileHandlerLock $lock, Experiment $experiment)
     {
-        $experiment
-            ->attempt(3)
-            ->toExecute(function () use ($lock) {
-                try {
-                    $lock->acquire();
-                    $wasSuccessful = true;
-                } catch (RuntimeException $exception) {
-                    $wasSuccessful = false;
-                }
-
-                return $wasSuccessful;
-            })
-            ->andWaitFor(300)
-            ->orExecute(function () use ($lock) {
+        $onFailure  = function () use ($lock) {
+            $lock->acquire();
+        };
+        $onSuccess  = function () {};
+        $trial      = function () use ($lock) {
+            try {
                 $lock->acquire();
-            });
+                $wasSuccessful = true;
+            } catch (RuntimeException $exception) {
+                $wasSuccessful = false;
+            }
+
+            return $wasSuccessful;
+        };
+
+        $experiment->prepareNewExperiment($trial, 3, 300, $onSuccess, $onFailure);
     }
 }

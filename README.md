@@ -90,6 +90,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.4.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.1) - released at 11.09.2015
+    * adapted to new *Experiment* from toolbox
 * [0.4.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.0) - released at 11.09.2015
     * moved code into directories (*Storage* and *IdGenerator*)
     * renamed *Repository* to *Storage*
