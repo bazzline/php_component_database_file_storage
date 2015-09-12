@@ -163,6 +163,8 @@ class Storage implements StorageInterface
         $iterator   = ($this->hasLimit()) ? $this->limit : -1;
 
         while ($line = $reader()) {
+            $isCountableLine = false;
+
             if ($this->isValidLine($line)) {
                 if ($this->hasFilterById) {
                     if ($this->lineHasId($line, $this->filterById)) {
@@ -171,11 +173,16 @@ class Storage implements StorageInterface
                     }
                 } else if ($this->hasFilters) {
                     if ($this->lineHasFilters($line, $this->filters)) {
-                        $collection = $this->addLineToCollection($line, $collection);
+                        $collection         = $this->addLineToCollection($line, $collection);
+                        $isCountableLine    = true;
                     }
                 } else {
-                    $collection = $this->addLineToCollection($line, $collection);
+                    $collection         = $this->addLineToCollection($line, $collection);
+                    $isCountableLine    = true;
                 }
+            }
+
+            if ($isCountableLine) {
                 --$iterator;
                 if ($iterator === 0) {
                     break;
