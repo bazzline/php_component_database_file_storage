@@ -15,30 +15,35 @@ interface StorageInterface
 {
     /**
      * @param array $data
+     * @param bool $resetRuntimeProperties
      * @return string - unique identifier
      */
-    public function create(array $data);
+    public function create(array $data, $resetRuntimeProperties = true);
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return array
      */
-    public function readMany();
+    public function readMany($resetRuntimeProperties = true);
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return null|mixed - nothing or data
      */
-    public function readOne();
+    public function readOne($resetRuntimeProperties = true);
 
     /**
      * @param array $data
+     * @param bool $resetRuntimeProperties
      * @return boolean
      */
-    public function update(array $data);
+    public function update(array $data, $resetRuntimeProperties = true);
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return boolean
      */
-    public function delete();
+    public function delete($resetRuntimeProperties = true);
 
     /**
      * @param mixed $key
@@ -59,4 +64,13 @@ interface StorageInterface
      * @return $this
      */
     public function limitBy($count, $offset = null);
+
+    /**
+     * @param int $atLeast
+     * @param null|int $atMost
+     * @return bool
+     */
+    public function has($atLeast = 1, $atMost = null);
+
+    public function resetRuntimeProperties();
 }

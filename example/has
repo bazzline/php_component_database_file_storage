@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2015-09-12
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$factory    = new \Net\Bazzline\Component\Database\FileStorage\Storage\StorageFactory();
+$storage    = $factory->create();
+$path       = __DIR__ . '/storage';
+
+$storage->injectPath($path);
+
+$searchTerms = array(
+    'foo'   => 'bar',
+    'bar'   => 'foo',
+    'baz'   => 'foobar',
+    'faz'   => 'barfoo'
+);
+
+foreach ($searchTerms as $key => $value) {
+    $storage->filterBy($key, $value);
+    echo 'does the storage has a key "' . $key . '" with the value of "' . $value . '"?' . PHP_EOL;
+    echo ($storage->has() ? 'yes' : 'no') . PHP_EOL;
+    echo '----' . PHP_EOL;
+    $storage->resetRuntimeProperties();
+}

@@ -54,7 +54,7 @@ class Storage implements StorageInterface
 
     public function __construct()
     {
-        $this->resetFilters();
+        $this->resetRuntimeProperties();
     }
 
     /**
@@ -125,9 +125,10 @@ class Storage implements StorageInterface
 
     /**
      * @param array $data
+     * @param bool $resetRuntimeProperties
      * @return string - unique identifier
      */
-    public function create(array $data)
+    public function create(array $data, $resetRuntimeProperties = true)
     {
         $id     = $this->generator->generate();
         $line   = $this->createLine($id, $data);
@@ -136,7 +137,8 @@ class Storage implements StorageInterface
         $this->acquireLock();
         $writer($line);
         $this->releaseLockIfNeeded();
-        $this->resetFilters();
+
+        $this->resetRuntimePropertiesIfNeeded($resetRuntimeProperties);
 
         return $id;
     }
@@ -144,10 +146,11 @@ class Storage implements StorageInterface
 
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return array
      * @todo
      */
-    public function readMany()
+    public function readMany($resetRuntimeProperties = true)
     {
         $collection = array();
         $reader     = $this->reader;
@@ -180,7 +183,7 @@ class Storage implements StorageInterface
             }
         }
 
-        $this->resetFilters();
+        $this->resetRuntimePropertiesIfNeeded($resetRuntimeProperties);
 
         return $collection;
     }
@@ -188,32 +191,35 @@ class Storage implements StorageInterface
 
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return null|mixed - nothing or data
      */
-    public function readOne()
+    public function readOne($resetRuntimeProperties = true)
     {
         $this->limitBy(1);
         $collection = $this->readMany();
-        $this->resetFilters();
+        $this->resetRuntimePropertiesIfNeeded($resetRuntimeProperties);
 
         return $collection;
     }
 
     /**
+     * @param bool $resetRuntimeProperties
      * @param array $data
      * @return boolean
      */
-    public function update(array $data)
+    public function update(array $data, $resetRuntimeProperties = true)
     {
-        return $this->updateOrDelete($data);
+        return $this->updateOrDelete($data, $resetRuntimeProperties);
     }
 
     /**
+     * @param bool $resetRuntimeProperties
      * @return boolean
      */
-    public function delete()
+    public function delete($resetRuntimeProperties = true)
     {
-        return $this->updateOrDelete(null);
+        return $this->updateOrDelete(null, $resetRuntimeProperties);
     }
 
     /**
@@ -259,10 +265,44 @@ class Storage implements StorageInterface
     }
 
     /**
-     * @param array $data - null triggers a deletion of fitting lines
+     * @param int $atLeast
+     * @param null|int $atMost
      * @return bool
      */
-    private function updateOrDelete(array $data = null)
+    public function has($atLeast = 1, $atMost = null)
+    {
+        if (is_null($atMost)) {
+            $this->limitBy($atLeast);
+        }
+
+        $numberOfEntries = count($this->readMany(false));
+
+        if (is_null($atMost)) {
+            $has = ($numberOfEntries >= $atLeast);
+        } else {
+            $has = (($numberOfEntries >= $atLeast)
+                && ($numberOfEntries <= $atMost));
+        }
+
+        return $has;
+    }
+
+    public function resetRuntimeProperties()
+    {
+        $this->filters          = array();
+        $this->filterById       = null;
+        $this->hasFilterById    = false;
+        $this->hasFilters       = false;
+        $this->limit            = null;
+        $this->offset           = null;
+    }
+
+    /**
+     * @param array $data - null triggers a deletion of fitting lines
+     * @param bool $resetRuntimeProperties
+     * @return bool
+     */
+    private function updateOrDelete(array $data = null, $resetRuntimeProperties = true)
     {
         $collection     = array();
         $delete         = (is_null($data));
@@ -335,7 +375,7 @@ class Storage implements StorageInterface
             $writer->setPath($this->path);
         }
 
-        $this->resetFilters();
+        $this->resetRuntimePropertiesIfNeeded($resetRuntimeProperties);
 
         return $wasSuccessful;
     }
@@ -386,14 +426,14 @@ class Storage implements StorageInterface
         return ((is_array($line) && count($line) === 2));
     }
 
-    private function resetFilters()
+    /**
+     * @param bool|true $isNeeded
+     */
+    private function resetRuntimePropertiesIfNeeded($isNeeded = true)
     {
-        $this->filters          = array();
-        $this->filterById       = null;
-        $this->hasFilterById    = false;
-        $this->hasFilters       = false;
-        $this->limit            = null;
-        $this->offset           = null;
+        if ($isNeeded) {
+            $this->resetRuntimeProperties();
+        }
     }
 
     /**
