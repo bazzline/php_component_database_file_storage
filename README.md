@@ -93,7 +93,7 @@ public function limitBy($count, $offset = null);
 * [0.5.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.1) - released at 12.09.2015
     * added example *has*
     * added method *has($atLeast = 1, $atMost = null)*
-    * added optional argument *resetRuntimeProperties* to *create*, *readMany*, *readOne*, *update* and *delete*
+    * added optional argument *resetRuntimeProperties* (*filters* and *limit* settings) to *create*, *readMany*, *readOne*, *update* and *delete*
 * [0.4.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.1) - released at 11.09.2015
     * adapted to new *Experiment* from toolbox
 * [0.4.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.4.0) - released at 11.09.2015
