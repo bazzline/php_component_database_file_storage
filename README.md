@@ -90,6 +90,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.6.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.1) - released at 12.09.2015
+    * added protected *getIdGenerator*, *getLockableWriterFactory*, *getReaderFactory* and *getStorage* methods to easy up creating your own storage by using the default factory
 * [0.6.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.0) - released at 12.09.2015
     * fixed issue in *readMany* if limit is used
 * [0.5.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.5.0) - released at 12.09.2015

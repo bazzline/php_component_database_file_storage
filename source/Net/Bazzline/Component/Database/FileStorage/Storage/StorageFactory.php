@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Database\FileStorage\Storage;
 
+use Net\Bazzline\Component\Database\FileStorage\IdGenerator\IdGeneratorInterface;
 use Net\Bazzline\Component\Database\FileStorage\IdGenerator\UUIDGenerator;
 use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Database\FileStorage\Writer\LockableWriterFactory;
@@ -22,17 +23,49 @@ class StorageFactory
      */
     public function create()
     {
-        $generator      = new UUIDGenerator();
-        $readerFactory  = new ReaderFactory();
+        $generator      = $this->getIdGenerator();
+        $readerFactory  = $this->getReaderFactory();
         $reader         = $readerFactory->create();
-        $repository     = new Storage();
-        $writerFactory  = new LockableWriterFactory();
+        $storage        = $this->getStorage();
+        $writerFactory  = $this->getLockableWriterFactory();
         $writer         = $writerFactory->create();
 
-        $repository->injectGenerator($generator);
-        $repository->injectReader($reader);
-        $repository->injectWriter($writer);
+        $storage->injectGenerator($generator);
+        $storage->injectReader($reader);
+        $storage->injectWriter($writer);
 
-        return $repository;
+        return $storage;
+    }
+
+    /**
+     * @return IdGeneratorInterface
+     */
+    protected function getIdGenerator()
+    {
+        return new UUIDGenerator();
+    }
+
+    /**
+     * @return LockableWriterFactory
+     */
+    protected function getLockableWriterFactory()
+    {
+        return new LockableWriterFactory();
+    }
+
+    /**
+     * @return ReaderFactory
+     */
+    protected function getReaderFactory()
+    {
+        return new ReaderFactory();
+    }
+
+    /**
+     * @return Storage
+     */
+    protected function getStorage()
+    {
+        return new Storage();
     }
 }
