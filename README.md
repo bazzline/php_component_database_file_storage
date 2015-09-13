@@ -67,6 +67,10 @@ public function limitBy($count, $offset = null);
 
 * implemented [locking](https://packagist.org/packages/net_bazzline/component_lock) to prevent multiple reads and writes
 
+# API
+
+[API](http://www.bazzline.net/7ef9fafed9e60d5b861fe82e107b79e3f7adae0e/index.html) is available at [bazzline.net](http://www.bazzline.net).
+
 ## Future Improvements
 
 * extend "filterBy"
@@ -90,6 +94,7 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+    * added *API* section
 * [0.6.2](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.2) - released at 13.09.2015
     * stabalized dependencies
 * [0.6.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.1) - released at 12.09.2015
