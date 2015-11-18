@@ -95,6 +95,8 @@ public function limitBy($count, $offset = null);
 * upcomming
     * @todo
     * added *API* section
+* [0.6.3](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.3) - released at 18.11.2015
+    * updated dependencies
 * [0.6.2](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.2) - released at 13.09.2015
     * stabalized dependencies
 * [0.6.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.1) - released at 12.09.2015
