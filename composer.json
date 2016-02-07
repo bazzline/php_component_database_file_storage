@@ -1,6 +1,16 @@
 {
     "description": "local file database",
-    "keywords": ["php", "local", "file", "database"],
+    "keywords": [
+        "bazzline",
+        "psr",
+        "psr-4",
+        "repository",
+        "uuid",
+        "php",
+        "local",
+        "file",
+        "database"
+    ],
     "license": "LGPLv3",
     "name": "net_bazzline/php_component_database_file_storage",
     "type": "library",
@@ -17,13 +27,13 @@
         "net_bazzline/component_lock": "2.1.*",
         "net_bazzline/php_component_csv": "1.5.*",
         "net_bazzline/php_component_toolbox": "1.8.*",
-        "php": ">=5.3.3",
-        "ramsey/uuid": ">=2.8.0"
+        "php": ">=5.4.*",
+        "ramsey/uuid": "3.1.*"
     },
     "require-dev": {
         "mikey179/vfsstream": "~1.6",
         "mockery/mockery": ">=0.9.4",
-        "phpunit/phpunit": "~4.8||~5.1"
+        "phpunit/phpunit": "~5.1"
     },
     "autoload": {
         "psr-4": {
