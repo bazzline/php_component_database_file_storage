@@ -95,6 +95,7 @@ public function limitBy($count, $offset = null);
 * upcomming
     * @todo
     * added *API* section
+    * moved to psr-4 autoloading
 * [0.6.5](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.5) - released at 18.12.2015
     * updated dependencies
 * [0.6.4](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.4) - released at 11.12.2015
@@ -126,3 +127,7 @@ public function limitBy($count, $offset = null);
     * fixed broken unit test
 * [0.3.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.3.0) - released at 10.09.2015
     * created and used own `LockableWriter` to switch from "FileNameLock" to "FileHandlerLock"
+
+# Final Words
+
+Star it if you like it :-). Add issues if you need it. Pull patches if you enjoy it. Write a blog entry if use it. Make a [donation](https://gratipay.com/~stevleibelt) if you love it :-].
