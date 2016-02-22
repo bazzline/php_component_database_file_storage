@@ -11,7 +11,7 @@
         "file",
         "database"
     ],
-    "license": "LGPLv3",
+    "license": "LGPL-3.0",
     "name": "net_bazzline/php_component_database_file_storage",
     "type": "library",
     "authors": [
