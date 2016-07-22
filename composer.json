@@ -31,7 +31,7 @@
         "ramsey/uuid": "3.3.*"
     },
     "require-dev": {
-        "mikey179/vfsstream": "~1.6",
+        "mikey179/vfsstream": "1.6.*",
         "mockery/mockery": ">=0.9.4",
         "phpunit/phpunit": "~4.8||~5.2"
     },
