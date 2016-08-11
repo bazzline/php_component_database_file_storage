@@ -94,6 +94,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+* [0.7.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.7.1) - released at 11.08.2016
+    * updated phpunit
 * [0.7.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.7.0) - released at 29.03.2016
     * added *API* section
     * bumped php version to 5.4
