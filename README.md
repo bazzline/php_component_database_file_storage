@@ -55,13 +55,17 @@ public function limitBy($count, $offset = null);
 
 ## By Hand
 
-    mkdir -p vendor/net_bazzline/php_component_database_file_storage
-    cd vendor/net_bazzline/php_component_database_file_storage
-    git clone https://github.com/bazzline/php_component_database_file_storage .
+```
+mkdir -p vendor/net_bazzline/php_component_database_file_storage
+cd vendor/net_bazzline/php_component_database_file_storage
+git clone https://github.com/bazzline/php_component_database_file_storage .
+```
 
 ## With [Packagist](https://packagist.org/packages/net_bazzline/php_component_database_file_storage)
 
-    composer require net_bazzline/php_component_database_file_storage:dev-master
+```
+composer require net_bazzline/php_component_database_file_storage:dev-master
+```
 
 # Benefits
 
@@ -94,6 +98,8 @@ public function limitBy($count, $offset = null);
 
 * upcomming
     * @todo
+    * added support for php version above 7.0
+    * dropped support for php version below 5.6
 * [0.7.1](https://github.com/bazzline/php_component_database_file_storage/tree/0.7.1) - released at 11.08.2016
     * updated phpunit
 * [0.7.0](https://github.com/bazzline/php_component_database_file_storage/tree/0.7.0) - released at 29.03.2016
