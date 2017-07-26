@@ -152,7 +152,7 @@ class Storage implements StorageInterface
      */
     public function readMany($resetRuntimeProperties = true)
     {
-        $collection = array();
+        $collection = [];
         $reader     = $this->reader;
         $reader->rewind();
 
@@ -296,7 +296,7 @@ class Storage implements StorageInterface
 
     public function resetRuntimeProperties()
     {
-        $this->filters          = array();
+        $this->filters          = [];
         $this->filterById       = null;
         $this->hasFilterById    = false;
         $this->hasFilters       = false;
@@ -311,7 +311,7 @@ class Storage implements StorageInterface
      */
     private function updateOrDelete(array $data = null, $resetRuntimeProperties = true)
     {
-        $collection     = array();
+        $collection     = [];
         $delete         = (is_null($data));
         $wasSuccessful  = true;
         $path           = $this->path . ($delete ? '.delete' : '.update');
@@ -547,7 +547,9 @@ class Storage implements StorageInterface
      */
     private function createLine($id, array $data)
     {
-        $line = array(self::KEY_ID => $id);
+        $line = [
+            self::KEY_ID => $id
+        ];
         $line = $this->setDataInLine($line, $data);
 
         return $line;

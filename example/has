@@ -13,12 +13,12 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 
-$searchTerms = array(
+$searchTerms = [
     'foo'   => 'bar',
     'bar'   => 'foo',
     'baz'   => 'foobar',
     'faz'   => 'barfoo'
-);
+];
 
 foreach ($searchTerms as $key => $value) {
     $storage->filterBy($key, $value);

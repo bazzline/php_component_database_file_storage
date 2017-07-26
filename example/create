@@ -13,11 +13,11 @@ $path       = __DIR__ . '/storage';
 
 $storage->injectPath($path);
 
-$data = array(
+$data = [
     'foo'   => 'bar',
     'bar'   => 'foo',
     'baz'   => 'foobar'
-);
+];
 
 $id = $storage->create($data);
 

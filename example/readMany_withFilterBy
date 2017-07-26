@@ -19,11 +19,11 @@ foreach ($collection as $id => $data) {
     ++$iterator;
 }
 
-$filters = array(
+$filters = [
     'bar' => 'foo',
     'baz' => 'foo',
     'foobar' => 'barfoo'
-);
+];
 
 echo 'Number of entries: ' . $iterator . PHP_EOL;
 

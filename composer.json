@@ -29,7 +29,7 @@
         "net_bazzline/component_lock": "2.1.*",
         "net_bazzline/php_component_csv": "1.9.*",
         "net_bazzline/php_component_toolbox": "1.9.*",
-        "php": "^5.6||^7.0"
+        "php": "^5.6||^7.0",
         "ramsey/uuid": "3.3.*"
     },
     "require-dev": {

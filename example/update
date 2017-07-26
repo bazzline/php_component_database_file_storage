@@ -28,11 +28,11 @@ foreach ($collection as $id => $data) {
 if (is_null($filterById)) {
     echo 'no data available in "' . $path . '"' . PHP_EOL;
 } else {
-    $data = array(
+    $data = [
         'foo'   => 'bar',
         'bar'   => 'foo',
         'baz'   => date('Y-m-d H:i:s')
-    );
+    ];
     echo 'number of entries: ' . $iterator . PHP_EOL;
     echo 'updating id "' . $filterById . '" with "' . var_export($data, true) . PHP_EOL;
     echo PHP_EOL;
